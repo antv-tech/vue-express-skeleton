@@ -10,6 +10,7 @@ let methodOverride = require('method-override');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
 let cors = require('cors');
+let minifyHTML = require('express-minify-html');
 let error = require('./../libs/error');
 
 let exampleMixin = {
@@ -44,6 +45,19 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cors());
+
+app.use(minifyHTML({
+    override: true,
+    exception_url: false,
+    htmlMinifier: {
+        removeComments: true,
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        removeEmptyAttributes: true,
+        minifyJS: true
+    }
+}));
 
 app.get('/', (req, res, next) => {
     let scope = {
@@ -87,6 +101,8 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 });
+
+app.use(express.static('./../public'));
 
 var users = [];
 var pageTitle = 'Express Vue';
