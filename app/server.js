@@ -59,6 +59,8 @@ app.use(minifyHTML({
     }
 }));
 
+app.use(express.static('public'));
+
 app.get('/', (req, res, next) => {
     let scope = {
         data: {
@@ -102,7 +104,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.use(express.static('./../public'));
 
 var users = [];
 var pageTitle = 'Express Vue';
